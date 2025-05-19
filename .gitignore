@@ -1,0 +1,17 @@
+# Ignore the build directory
+/build/
+
+# Ignore the compiled executables
+*.out
+*.exe
+llm_cli
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+MakeFile
+
+# OS-Specific files
+.DS_Store
+Thumbs.db
