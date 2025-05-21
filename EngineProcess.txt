@@ -1,0 +1,18 @@
+#STAGE 1:
+The first milestone for is LLM project is to see if we can get this program to produce *any* amount of 
+comprehensible output. This means feeding into the modal as much input as possible, the using the 
+data fed to output English characters in a string that can hopefully be read by a person.
+
+# LEARNING PROCESS:
+The data fed to the engine will be plain text; something that can be easily parsed and used to create 
+a network of probability. The simplest form of learning comes from the idea of statistical character prediction.
+This means that for a set of 'n' characters, we can store that specific sequence, and create a map of characters
+that have previously been thought to come after that sequence. 
+For this project, the assumption can be made that for a set of 'n' sequence of English characters, the combinations 
+of such are of a great number, and cannot expect to include every known set of character sequences. A method 
+will need to be in place of an instance where the modal is unable to retrieve the current set of 'n' characters.
+
+# STORING PROBABILITY:
+One challenge that comes up immediately is the fact that this modal needs a way to compound what it has learned
+and easily refer back to it.
+

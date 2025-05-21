@@ -1,0 +1,17 @@
+{
+    "a": {
+        "char": "a",
+        "children": {
+            "b": {
+                "char": "b",
+                "next_chars": {
+                    "x": 2
+                }
+            }
+        },
+        "next_chars": {
+            "b": 3,
+            "c": 1
+        }
+    }
+}
