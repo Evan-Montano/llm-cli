@@ -9,16 +9,6 @@ A command-line interface for an experimental large language model (LLM), written
 - Develop a robust and extensible CLI for interacting with the model
 - Maintain cross-platform compatibility (Linux & Windows)
 
-## 📁 Project Structure
-
-llm-cli/
-├── src/              # C++ source files
-├── include/          # C++ header files
-├── build/            # CMake build output (ignored by git)
-├── CMakeLists.txt    # CMake build script
-├── .gitignore        # Git ignore rules
-└── README.md         # Project overview (this file)
-
 ## 🛠️ Build Instructions
 
 ### Requirements
