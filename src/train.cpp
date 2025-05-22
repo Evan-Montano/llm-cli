@@ -6,6 +6,7 @@
 #include <deque>
 #include <cctype>
 #include <filesystem>
+#include <iomanip>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -20,14 +21,20 @@ void ScrubPathInput(std::string& path) {
     }
 }
 
+std::string byteToHexString(char byte) {
+    std::stringstream ss;
+    ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
+    return ss.str();
+}
+
 void ProcessSubstring(const std::string& str, json& tree) {
     if (str.size() < 2) return;
 
-    std::string firstChar(1, str[0]);
+    std::string firstChar = byteToHexString(str[0]);
     json* node = &tree[firstChar];
 
     for (size_t i = 0; i + 1 < str.size(); ++i) {
-        std::string nextChar(1, str[i + 1]);
+        std::string nextChar = byteToHexString(str[i + 1]);
 
         if (!(*node).contains("next_chars") || !(*node)["next_chars"].is_object()) {
             (*node)["next_chars"] = json::object();
@@ -119,7 +126,7 @@ void ParseFileByChar(const std::string& filePath) {
         std::cerr << "Error opening file for write\n";
         return;
     }
-    outFile << tree.dump(4) << "\n";
+    outFile << tree.dump(1) << "\n";
 
     std::cout << "Finish!";
 }
