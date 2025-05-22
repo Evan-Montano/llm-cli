@@ -17,6 +17,7 @@ FetchContent_Declare(
   json
   GIT_REPOSITORY https://github.com/nlohmann/json
   GIT_TAG v3.11.2
+  PATCH_COMMAND sed -i "s/cmake_minimum_required(VERSION 3.1)/cmake_minimum_required(VERSION 3.1...3.10)/" CMakeLists.txt
 )
 
 # Important: FTXUI must be made available before json
