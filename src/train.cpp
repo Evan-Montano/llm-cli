@@ -1,4 +1,5 @@
 // src/train.cpp
+// gutenberge project
 #include "train.hpp"
 #include <iostream>
 #include <fstream>
@@ -6,6 +7,7 @@
 #include <deque>
 #include <cctype>
 #include <filesystem>
+#include <vector>
 #include <iomanip>
 #include <nlohmann/json.hpp>
 
@@ -21,20 +23,21 @@ void ScrubPathInput(std::string& path) {
     }
 }
 
-std::string byteToHexString(char byte) {
+std::string ByteToHexString(char byte) {
     std::stringstream ss;
     ss << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(static_cast<unsigned char>(byte));
     return ss.str();
 }
 
+
 void ProcessSubstring(const std::string& str, json& tree) {
     if (str.size() < 2) return;
 
-    std::string firstChar = byteToHexString(str[0]);
+    std::string firstChar = ByteToHexString(str[0]);
     json* node = &tree[firstChar];
 
     for (size_t i = 0; i + 1 < str.size(); ++i) {
-        std::string nextChar = byteToHexString(str[i + 1]);
+        std::string nextChar = ByteToHexString(str[i + 1]);
 
         if (!(*node).contains("next_chars") || !(*node)["next_chars"].is_object()) {
             (*node)["next_chars"] = json::object();
@@ -72,28 +75,25 @@ std::string NormalizePath(const std::string& raw) {
 void ParseFileByChar(const std::string& filePath) {
     fs::path p{ filePath };
 
-    // Load the JSON tree into memory
+    // Load the binary CBOR tree into memory
     std::cout << "Loading training data from disk..\n";
     json tree;
     {
-        std::ifstream inFile("../data/character_modal.json");
+        std::ifstream inFile("../data/character_modal.cbor", std::ios::binary);
         if (inFile && inFile.peek() != std::ifstream::traits_type::eof()) {
-            //only attempt parse if file exists AND is non-empty
             try {
-                inFile >> tree;
-            }
-            catch (const json::parse_error& e) {
-                std::cerr << "Error parsing JSON: " << e.what() << "\n";
+                std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(inFile), {});
+                tree = json::from_cbor(buffer);
+            } catch (const json::parse_error& e) {
+                std::cerr << "Error parsing CBOR: " << e.what() << "\n";
                 tree = json::object();
             }
-        }
-        else {
+        } else {
             tree = json::object();
         }
     }
     std::cout << "Training data loaded..\n";
 
-    std::cout << "Loading input file..\n";
     std::ifstream file(filePath, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "Failed to open file\n";
@@ -121,12 +121,14 @@ void ParseFileByChar(const std::string& filePath) {
         ProcessSubstring(subString, tree);
     }
 
-    std::ofstream outFile("../data/character_modal.json");
+    std::ofstream outFile("../data/character_modal.cbor", std::ios::binary);
     if (!outFile) {
         std::cerr << "Error opening file for write\n";
         return;
     }
-    outFile << tree.dump(1) << "\n";
+
+    std::vector<uint8_t> output = json::to_cbor(tree);
+    outFile.write(reinterpret_cast<const char*>(output.data()), output.size());
 
     std::cout << "Finish!";
 }

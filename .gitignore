@@ -1,7 +1,6 @@
 # Ignore the build directory
 /build/
 /build-windows/
-/data/
 
 # Ignore the compiled executables
 *.out
@@ -17,4 +16,3 @@ MakeFile
 # OS-Specific files
 .DS_Store
 Thumbs.db
-data/character_modal.json
