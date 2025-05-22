@@ -1,17 +1,450 @@
 {
-    "a": {
-        "char": "a",
+    " ": {
         "children": {
-            "b": {
-                "char": "b",
+            "s": {
+                "children": {
+                    "a": {
+                        "children": {
+                            "m": {
+                                "children": {
+                                    "p": {
+                                        "children": {
+                                            "l": {
+                                                "children": {
+                                                    "e": null
+                                                },
+                                                "next_chars": {
+                                                    "e": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "l": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "p": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "m": 1
+                        }
+                    }
+                },
                 "next_chars": {
-                    "x": 2
+                    "a": 1
                 }
             }
         },
         "next_chars": {
-            "b": 3,
-            "c": 1
+            "s": 1
+        }
+    },
+    "a": {
+        "children": {
+            "m": {
+                "children": {
+                    "p": {
+                        "children": {
+                            "l": {
+                                "children": {
+                                    "e": {
+                                        "children": {
+                                            " ": {
+                                                "children": {
+                                                    "t": null
+                                                },
+                                                "next_chars": {
+                                                    "t": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            " ": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "e": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "l": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "p": 1
+                }
+            }
+        },
+        "next_chars": {
+            "m": 1
+        }
+    },
+    "e": {
+        "children": {
+            " ": {
+                "children": {
+                    "s": {
+                        "children": {
+                            "a": {
+                                "children": {
+                                    "m": {
+                                        "children": {
+                                            "p": {
+                                                "children": {
+                                                    "l": null
+                                                },
+                                                "next_chars": {
+                                                    "l": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "p": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "m": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "a": 1
+                        }
+                    },
+                    "t": {
+                        "children": {
+                            "e": {
+                                "children": {
+                                    "x": {
+                                        "children": {
+                                            "t": {
+                                                "children": {
+                                                    ".": null
+                                                },
+                                                "next_chars": {
+                                                    ".": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "t": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "x": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "e": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "s": 1,
+                    "t": 1
+                }
+            }
+        },
+        "next_chars": {
+            " ": 2
+        }
+    },
+    "l": {
+        "children": {
+            "e": {
+                "children": {
+                    " ": {
+                        "children": {
+                            "t": {
+                                "children": {
+                                    "e": {
+                                        "children": {
+                                            "x": {
+                                                "children": {
+                                                    "t": null
+                                                },
+                                                "next_chars": {
+                                                    "t": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "x": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "e": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "t": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    " ": 1
+                }
+            }
+        },
+        "next_chars": {
+            "e": 1
+        }
+    },
+    "m": {
+        "children": {
+            "e": {
+                "children": {
+                    " ": {
+                        "children": {
+                            "s": {
+                                "children": {
+                                    "a": {
+                                        "children": {
+                                            "m": {
+                                                "children": {
+                                                    "p": null
+                                                },
+                                                "next_chars": {
+                                                    "p": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "m": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "a": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "s": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    " ": 1
+                }
+            },
+            "p": {
+                "children": {
+                    "l": {
+                        "children": {
+                            "e": {
+                                "children": {
+                                    " ": {
+                                        "children": {
+                                            "t": {
+                                                "children": {
+                                                    "e": null
+                                                },
+                                                "next_chars": {
+                                                    "e": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "t": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    " ": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "e": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "l": 1
+                }
+            }
+        },
+        "next_chars": {
+            "e": 1,
+            "p": 1
+        }
+    },
+    "o": {
+        "children": {
+            "m": {
+                "children": {
+                    "e": {
+                        "children": {
+                            " ": {
+                                "children": {
+                                    "s": {
+                                        "children": {
+                                            "a": {
+                                                "children": {
+                                                    "m": null
+                                                },
+                                                "next_chars": {
+                                                    "m": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "a": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "s": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            " ": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "e": 1
+                }
+            }
+        },
+        "next_chars": {
+            "m": 1
+        }
+    },
+    "p": {
+        "children": {
+            "l": {
+                "children": {
+                    "e": {
+                        "children": {
+                            " ": {
+                                "children": {
+                                    "t": {
+                                        "children": {
+                                            "e": {
+                                                "children": {
+                                                    "x": null
+                                                },
+                                                "next_chars": {
+                                                    "x": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "e": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "t": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            " ": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "e": 1
+                }
+            }
+        },
+        "next_chars": {
+            "l": 1
+        }
+    },
+    "s": {
+        "children": {
+            "a": {
+                "children": {
+                    "m": {
+                        "children": {
+                            "p": {
+                                "children": {
+                                    "l": {
+                                        "children": {
+                                            "e": {
+                                                "children": {
+                                                    " ": null
+                                                },
+                                                "next_chars": {
+                                                    " ": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "e": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    "l": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "p": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "m": 1
+                }
+            },
+            "o": {
+                "children": {
+                    "m": {
+                        "children": {
+                            "e": {
+                                "children": {
+                                    " ": {
+                                        "children": {
+                                            "s": {
+                                                "children": {
+                                                    "a": null
+                                                },
+                                                "next_chars": {
+                                                    "a": 1
+                                                }
+                                            }
+                                        },
+                                        "next_chars": {
+                                            "s": 1
+                                        }
+                                    }
+                                },
+                                "next_chars": {
+                                    " ": 1
+                                }
+                            }
+                        },
+                        "next_chars": {
+                            "e": 1
+                        }
+                    }
+                },
+                "next_chars": {
+                    "m": 1
+                }
+            }
+        },
+        "next_chars": {
+            "a": 1,
+            "o": 1
         }
     }
 }

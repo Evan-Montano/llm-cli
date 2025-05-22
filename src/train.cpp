@@ -3,11 +3,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <deque>
+#include <cctype>
 #include <filesystem>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
+const int BUFFER_SIZE = 7;
 
 void ScrubPathInput(std::string& path) {
     if (path.front() == '"' && path.back() == '"') {
@@ -15,6 +19,33 @@ void ScrubPathInput(std::string& path) {
         path.pop_back();
     }
 }
+
+void ProcessSubstring(const std::string& str, json& tree) {
+    if (str.size() < 2) return;
+
+    std::string firstChar(1, str[0]);
+    json* node = &tree[firstChar];
+
+    for (size_t i = 0; i + 1 < str.size(); ++i) {
+        std::string nextChar(1, str[i + 1]);
+
+        if (!(*node).contains("next_chars") || !(*node)["next_chars"].is_object()) {
+            (*node)["next_chars"] = json::object();
+        }
+
+        // Increment the counter
+        (*node)["next_chars"][nextChar] =
+            (*node)["next_chars"].value(nextChar, 0) + 1;
+
+        if (!(*node).contains("children") || !(*node)["children"].is_object()) {
+            (*node)["children"] = json::object();
+        }
+
+        // Descend into the child for nextChar
+        node = &(*node)["children"][nextChar];
+    }
+}
+
 
 std::string NormalizePath(const std::string& raw) {
 #ifndef _WIN32
@@ -34,16 +65,63 @@ std::string NormalizePath(const std::string& raw) {
 void ParseFileByChar(const std::string& filePath) {
     fs::path p{ filePath };
 
+    // Load the JSON tree into memory
+    std::cout << "Loading training data from disk..\n";
+    json tree;
+    {
+        std::ifstream inFile("../data/character_modal.json");
+        if (inFile && inFile.peek() != std::ifstream::traits_type::eof()) {
+            //only attempt parse if file exists AND is non-empty
+            try {
+                inFile >> tree;
+            }
+            catch (const json::parse_error& e) {
+                std::cerr << "Error parsing JSON: " << e.what() << "\n";
+                tree = json::object();
+            }
+        }
+        else {
+            tree = json::object();
+        }
+    }
+    std::cout << "Training data loaded..\n";
+
+    std::cout << "Loading input file..\n";
     std::ifstream file(filePath, std::ios::binary);
     if (!file.is_open()) {
-        std::cerr << "Failed to open file";
+        std::cerr << "Failed to open file\n";
         return;
     }
 
-    char ch;
-    while (file.get(ch)) {
-        std::cout << ch;
+    std::cout << "Working..\n";
+    std::deque<char> window;
+    char characterInFile;
+
+    for (int i = 0; i < BUFFER_SIZE && file.get(characterInFile); ++i) {
+        window.push_back(characterInFile);
     }
+
+    if (window.size() == BUFFER_SIZE) {
+        std::string subString(window.begin(), window.end());
+        ProcessSubstring(subString, tree);
+    }
+
+    while (file.get(characterInFile)) {
+        window.pop_front();
+        window.push_back(characterInFile);
+
+        std::string subString(window.begin(), window.end());
+        ProcessSubstring(subString, tree);
+    }
+
+    std::ofstream outFile("../data/character_modal.json");
+    if (!outFile) {
+        std::cerr << "Error opening file for write\n";
+        return;
+    }
+    outFile << tree.dump(4) << "\n";
+
+    std::cout << "Finish!";
 }
 
 void InitializeTrainModule() {
@@ -56,56 +134,3 @@ void InitializeTrainModule() {
     
     ParseFileByChar(textFilePath);
 }
-
-// Create JSON object
-// json tree;
-// tree["a"]["char"] = "a";
-// tree["a"]["next_chars"]["b"] = 3;
-// tree["a"]["next_chars"]["c"] = 1;
-// tree["a"]["children"]["b"]["char"] = "b";
-// tree["a"]["children"]["b"]["next_chars"]["x"] = 2;
-
-// // Write JSON to file
-// std::ofstream outfile("../data/character_modal.json");
-// outfile << tree.dump(4); // Pretty print with indent = 4
-// outfile.close();
-
-// std::cout << "JSON written to ../data/character_modal.json";
-
-// Read from JSON file
-// std::ifstream inFile("../data/character_modal.json");
-// json loadedTree;
-// inFile >> loadedTree;
-// inFile.close();
-
-// std::cout << "Loaded char at a: " << loadedTree["a"]["char"] << "\n";
-// std::cout << "Next char count for 'b': " << loadedTree["a"]["next_chars"]["b"] << "\n";
-
-
-// std::cout << "\n\nPress Enter to exit...\n";
-// std::cin.get();
-// return 0;
-
-//#include <iostream>
-//#include <fstream>
-//
-//void parseFileCharByChar(const std::string& filepath) {
-//    std::ifstream file(filepath);
-//    if (!file.is_open()) {
-//        std::cerr << "Failed to open file: " << filepath << "\n";
-//        return;
-//    }
-//
-//    char ch;
-//    while (file.get(ch)) {  // Reads one character at a time
-//        std::cout << "Char: " << ch << "\n";
-//        // Example: Count words, parse tokens, etc.
-//    }
-//
-//    file.close();
-//}
-//
-//int main() {
-//    parseFileCharByChar("example.txt");
-//    return 0;
-//}
