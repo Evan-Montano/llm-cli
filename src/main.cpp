@@ -63,7 +63,7 @@ int main() {
 			break;
 	}
 
-	std::cout << "\n\nPress Enter to exit...";
+	std::cout << "\n\nPress Enter to exit...\n";
 	std::cin.get();
 	return 0;
 }

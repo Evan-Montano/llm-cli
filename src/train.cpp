@@ -1,4 +1,4 @@
-// src/train.cpp
+﻿// src/train.cpp
 // gutenberge project
 #include "train.hpp"
 #include <iostream>
@@ -14,7 +14,7 @@
 using json = nlohmann::json;
 namespace fs = std::filesystem;
 
-const int BUFFER_SIZE = 7;
+const int BUFFER_SIZE = 16;
 
 void ScrubPathInput(std::string& path) {
     if (path.front() == '"' && path.back() == '"') {
@@ -32,20 +32,20 @@ void ProcessSubstring(const std::string& str, json& tree) {
     for (size_t i = 0; i + 1 < str.size(); ++i) {
         std::string nextChar = std::string(1, str[i + 1]);
 
-        if (!(*node).contains("next_chars") || !(*node)["next_chars"].is_object()) {
-            (*node)["next_chars"] = json::object();
+        if (!(*node).contains("nxt") || !(*node)["nxt"].is_object()) {
+            (*node)["nxt"] = json::object();
         }
 
         // Increment the counter
-        (*node)["next_chars"][nextChar] =
-            (*node)["next_chars"].value(nextChar, 0) + 1;
+        (*node)["nxt"][nextChar] =
+            (*node)["nxt"].value(nextChar, 0) + 1;
 
-        if (!(*node).contains("children") || !(*node)["children"].is_object()) {
-            (*node)["children"] = json::object();
+        if (!(*node).contains("cldrn") || !(*node)["cldrn"].is_object()) {
+            (*node)["cldrn"] = json::object();
         }
 
         // Descend into the child for nextChar
-        node = &(*node)["children"][nextChar];
+        node = &(*node)["cldrn"][nextChar];
     }
 }
 
@@ -67,6 +67,20 @@ std::string NormalizePath(const std::string& raw) {
 
 void ParseFileByChar(const std::string& filePath) {
     fs::path p{ filePath };
+
+    // Debug: scan raw file for the cue
+    {
+        std::ifstream rawIn(filePath, std::ios::binary);
+        std::string all((std::istreambuf_iterator<char>(rawIn)),
+            std::istreambuf_iterator<char>());
+        if (all.find("\nAI:") == std::string::npos) {
+            std::cerr << "Debug: '\\nAI:' not found in raw input!\n";
+        }
+        else {
+            std::cout << "Debug: '\\nAI:' located in raw input\n";
+        }
+    }
+
 
     // Load the binary CBOR tree into memory
     std::cout << "Loading training data from disk..\n";
@@ -124,6 +138,22 @@ void ParseFileByChar(const std::string& filePath) {
     outFile.write(reinterpret_cast<const char*>(output.data()), output.size());
 
     std::cout << "Finish!";
+
+    // ==== Debug block ====
+    if (tree.contains("\n")
+        && tree["\n"].contains("cldrn")
+        && tree["\n"]["cldrn"].contains("A")
+        && tree["\n"]["cldrn"]["A"].contains("cldrn")
+        && tree["\n"]["cldrn"]["A"]["cldrn"].contains("I")
+        && tree["\n"]["cldrn"]["A"]["cldrn"]["I"].contains("nxt")) {
+        std::cout << "TRAIN: '\\nAI:' node now has "
+            << tree["\n"]["cldrn"]["A"]["cldrn"]["I"]["nxt"].size()
+            << " next‐char entries\n";
+    }
+    else {
+        std::cerr << "TRAIN: '\\nAI:' node still missing!\n";
+    }
+    // =====================
 }
 
 void InitializeTrainModule() {

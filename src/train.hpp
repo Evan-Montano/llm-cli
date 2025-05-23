@@ -1,8 +1,12 @@
 #ifndef TRAIN_H
 #define TRAIN_H
 
-//void scrubPathInput(std::string& path);
+#include <nlohmann/json.hpp>
+#include <string>
+
 
 void InitializeTrainModule();
+
+void ProcessSubstring(const std::string& str, nlohmann::json& tree);
 
 #endif
